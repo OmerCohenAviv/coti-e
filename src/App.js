@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Countries from "./components/Countries/Countries";
+import "./App.css";
+import SelectedCountry from "./components/Countries/SelectedCountry";
 
 function App() {
+  const [selectedLetter, setSelectedLetter] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const onUpdateLetter = (updatedLetter) => {
+    setSelectedCountry(null);
+    if (updatedLetter === selectedLetter) {
+      return setSelectedLetter("");
+    }
+    return setSelectedLetter(updatedLetter);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Sidebar
+        selectedLetter={selectedLetter}
+        setSelectedLetter={onUpdateLetter}
+      />
+      <div style={{ marginLeft: "400px" }}>
+        {!selectedCountry && (
+          <Countries
+            selectedLetter={selectedLetter}
+            setSelectedCountry={setSelectedCountry}
+          />
+        )}
+        {selectedCountry && (
+          <SelectedCountry
+            country={selectedCountry}
+            setSelectedCountry={setSelectedCountry}
+          />
+        )}
+      </div>
     </div>
   );
 }
